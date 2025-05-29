@@ -74,15 +74,15 @@ uploaded_file = st.file_uploader(text[lang]['upload'], type=["jpg", "jpeg", "png
 if uploaded_file is not None:
     st.image(uploaded_file, caption=text[lang]['uploaded'], use_column_width=True)
 
-    image = Image.open(uploaded_file).convert("RGB")
-    img_array = np.array(image)
-
-    img_resized = cv2.resize(img_array, (image_size, image_size))
-    img_normalized = img_resized / 255.0
-    img_input = np.expand_dims(img_normalized, axis=0)
+    # OpenCV ile işle (train işlemiyle birebir aynı)
+    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+    img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)  # BGR formatında okur
+    img = cv2.resize(img, (image_size, image_size))   # (32,32)
+    img = img / 255.0                                 # normalize
+    img = np.expand_dims(img, axis=0)                 # (1,32,32,3)
 
     # -------------------- Tahmin --------------------
-    predictions = model.predict(img_input)
+    predictions = model.predict(img)
     predicted_class_id = int(np.argmax(predictions))
     confidence = float(np.max(predictions)) * 100
     predicted_class_name = class_names.get(predicted_class_id, f"Unknown Class: {predicted_class_id}")

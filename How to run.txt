@@ -1,0 +1,22 @@
+
+  1)Requirements
+
+[Python 3.8+]
+
+streamlit
+tensorflow
+opencv-python
+pillow
+numpy
+pandas
+
+--To auto install the requirements run this code in your terminal.
+  cd path/to/project-folder pip install -r requirements.txt
+
+2) To start the GUI(Graphical User Interface):
+
+2.1)Simply run the StartGUI.bat file in the file.
+
+2.2)Manuel way: 
+	cd path/to/project-folder streamlit run trafficGUI.py
+
